@@ -14,6 +14,8 @@ typedef struct {
 	void* wrapper;
 } FastRTPSPublisher;
 
+
+void RegisterType(FastRTPSParticipant* participant, void* topicDataType);
 TopicDataTypes GetTopicDataTypes();
 FastRTPSParticipant* NewFastRTPSParticipant(char *name);
 FastRTPSPublisher* NewFastRTPSPublisher(FastRTPSParticipant *participant, void* topicDataType, char* topicName);

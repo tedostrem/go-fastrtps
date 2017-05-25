@@ -21,8 +21,10 @@ func image() []byte {
 }
 
 func main() {
+	media := C.GetTopicDataTypes().media
 	participant := C.NewFastRTPSParticipant(C.CString("participant"))
-	publisher := C.NewFastRTPSPublisher(participant, C.GetTopicDataTypes().media, C.CString("media_topic"))
+	C.RegisterType(participant, media)
+	publisher := C.NewFastRTPSPublisher(participant, media, C.CString("media_topic"))
 
 	img := image()
 	for i := 0; i < 10000; i += 1 {

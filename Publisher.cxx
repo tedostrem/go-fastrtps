@@ -12,7 +12,6 @@
 using namespace eprosima::fastrtps;
 
 class FastRTPSParticipantWrapper {
-	private:
 	public:
 		Participant *participant;
 		FastRTPSParticipantWrapper(char *name) {
@@ -31,11 +30,13 @@ class FastRTPSPublisherWrapper {
 		Publisher *publisher;
 		PubListener listener;
 	public:
-		FastRTPSPublisherWrapper(Participant* participant, TopicDataType& topicDataType, char* topicName) {
-  		Domain::registerType(participant, (TopicDataType*)&topicDataType);
+		FastRTPSPublisherWrapper(
+				Participant* participant, 
+				TopicDataType* topicDataType, 
+				char* topicName) {
   		// Create Publisher
   		PublisherAttributes Wparam;
-			Wparam.topic.topicDataType = topicDataType.getName();
+			Wparam.topic.topicDataType = topicDataType->getName();
 			Wparam.topic.topicName = topicName;
 			Wparam.historyMemoryPolicy = DYNAMIC_RESERVE_MEMORY_MODE;
 			Wparam.topic.topicKind = NO_KEY;
@@ -47,6 +48,7 @@ class FastRTPSPublisherWrapper {
 			Wparam.topic.resourceLimitsQos.max_instances = 1;
 			Wparam.topic.resourceLimitsQos.max_samples_per_instance = 100;
 			Wparam.qos.m_publishMode.kind = ASYNCHRONOUS_PUBLISH_MODE;
+
   		publisher = Domain::createPublisher(participant, Wparam, (PublisherListener *)&listener);
   		if (publisher == nullptr)
 				throw;
@@ -61,6 +63,11 @@ class FastRTPSPublisherWrapper {
 		}
 };
 
+extern "C" void RegisterType(FastRTPSParticipant* participant, void* topicDataType) {
+	Domain::registerType(
+			((FastRTPSParticipantWrapper*)participant->wrapper)->participant, 
+			(TopicDataType*)topicDataType);
+}
 
 extern "C" TopicDataTypes GetTopicDataTypes() {
 	TopicDataTypes topicDataTypes;
@@ -78,7 +85,7 @@ extern "C" FastRTPSPublisher* NewFastRTPSPublisher(FastRTPSParticipant *particip
 	FastRTPSPublisher* publisher = new FastRTPSPublisher();
 	publisher->wrapper = new FastRTPSPublisherWrapper(
 			((FastRTPSParticipantWrapper*)participant->wrapper)->participant, 
-			(TopicDataType&)*(TopicDataType*)topicDataType, 
+			(TopicDataType*)topicDataType, 
 			topicName);
 	return publisher;
 }
