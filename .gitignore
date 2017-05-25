@@ -1,1 +1,6 @@
+*.h
+*.cxx
+*.a
+*PubSubTypes.*
 publisher.out
+*.o
