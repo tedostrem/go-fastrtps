@@ -25,31 +25,35 @@ class FastRTPSParticipantWrapper {
 		}
 };
 
+class PublisherAttributesFactory {
+	public:
+		static PublisherAttributes* Reliable(TopicDataType* topicDataType, char* topicName) {
+			PublisherAttributes* Wparam = new PublisherAttributes();
+			Wparam->topic.topicDataType = topicDataType->getName();
+			Wparam->topic.topicName = topicName;
+			return Wparam;
+		}
+		static PublisherAttributes* Multimedia(TopicDataType* topicDataType, char* topicName) {
+			PublisherAttributes* Wparam = new PublisherAttributes();
+			Wparam->topic.topicDataType = topicDataType->getName();
+			Wparam->topic.topicName = topicName;
+			Wparam->qos.m_reliability.kind = BEST_EFFORT_RELIABILITY_QOS;
+			Wparam->topic.historyQos.depth =  50;
+			Wparam->topic.resourceLimitsQos.max_samples = 100;
+			Wparam->topic.resourceLimitsQos.max_instances = 1;
+			Wparam->topic.resourceLimitsQos.max_samples_per_instance = 100;
+			Wparam->qos.m_publishMode.kind = ASYNCHRONOUS_PUBLISH_MODE;
+			return Wparam;
+	}
+};
+
 class FastRTPSPublisherWrapper {
 	private:
-		Publisher *publisher;
+		Publisher* publisher;
 		PubListener listener;
 	public:
-		FastRTPSPublisherWrapper(
-				Participant* participant, 
-				TopicDataType* topicDataType, 
-				char* topicName) {
-  		// Create Publisher
-  		PublisherAttributes Wparam;
-			Wparam.topic.topicDataType = topicDataType->getName();
-			Wparam.topic.topicName = topicName;
-			Wparam.historyMemoryPolicy = DYNAMIC_RESERVE_MEMORY_MODE;
-			Wparam.topic.topicKind = NO_KEY;
-			Wparam.topic.historyQos.kind = KEEP_LAST_HISTORY_QOS;
-			Wparam.qos.m_durability.kind = VOLATILE_DURABILITY_QOS;
-			Wparam.qos.m_reliability.kind = BEST_EFFORT_RELIABILITY_QOS;
-			Wparam.topic.historyQos.depth =  50;
-			Wparam.topic.resourceLimitsQos.max_samples = 100;
-			Wparam.topic.resourceLimitsQos.max_instances = 1;
-			Wparam.topic.resourceLimitsQos.max_samples_per_instance = 100;
-			Wparam.qos.m_publishMode.kind = ASYNCHRONOUS_PUBLISH_MODE;
-
-  		publisher = Domain::createPublisher(participant, Wparam, (PublisherListener *)&listener);
+		FastRTPSPublisherWrapper(Participant* participant, PublisherAttributes* publisherAttributes) {
+  		publisher = Domain::createPublisher(participant, *publisherAttributes, (PublisherListener *)&listener);
   		if (publisher == nullptr)
 				throw;
   		std::cout << "Publisher created, waiting for Subscribers." << std::endl;
@@ -63,33 +67,39 @@ class FastRTPSPublisherWrapper {
 		}
 };
 
-extern "C" void RegisterType(FastRTPSParticipant* participant, void* topicDataType) {
+extern "C" void FastRTPSRegisterType(FastRTPSParticipant* participant, void* topicDataType) {
 	Domain::registerType(
 			((FastRTPSParticipantWrapper*)participant->wrapper)->participant, 
 			(TopicDataType*)topicDataType);
 }
 
-extern "C" TopicDataTypes GetTopicDataTypes() {
-	TopicDataTypes topicDataTypes;
+extern "C" FastRTPSPublisherAttributes FastRTPSGetPublisherAttributes(void* topicDataType, char* topicName) {
+	FastRTPSPublisherAttributes publisherAttributes;
+	publisherAttributes.reliable = PublisherAttributesFactory::Reliable((TopicDataType*)topicDataType, topicName); 
+	publisherAttributes.multimedia = PublisherAttributesFactory::Multimedia((TopicDataType*)topicDataType, topicName); 
+	return publisherAttributes;
+}
+
+extern "C" FastRTPSTopicDataTypes FastRTPSGetTopicDataTypes() {
+	FastRTPSTopicDataTypes topicDataTypes;
 	topicDataTypes.media = (TopicDataType*)new MediaPubSubType();
 	return topicDataTypes;
 }
 
-extern "C" FastRTPSParticipant* NewFastRTPSParticipant(char *name) {
+extern "C" FastRTPSParticipant* FastRTPSNewParticipant(char *name) {
 	FastRTPSParticipant* participant = new FastRTPSParticipant();
 	participant->wrapper = new FastRTPSParticipantWrapper(name);
 	return participant;
 }
 
-extern "C" FastRTPSPublisher* NewFastRTPSPublisher(FastRTPSParticipant *participant, void* topicDataType, char* topicName) {
+extern "C" FastRTPSPublisher* FastRTPSNewPublisher(FastRTPSParticipant *participant, void* publisherAttributes) {
 	FastRTPSPublisher* publisher = new FastRTPSPublisher();
 	publisher->wrapper = new FastRTPSPublisherWrapper(
 			((FastRTPSParticipantWrapper*)participant->wrapper)->participant, 
-			(TopicDataType*)topicDataType, 
-			topicName);
+			(PublisherAttributes*)publisherAttributes);
 	return publisher;
 }
 
-extern "C" void Publish(FastRTPSPublisher* publisher, char *image) {
+extern "C" void FastRTPSPublish(FastRTPSPublisher* publisher, char *image) {
 	((FastRTPSPublisherWrapper *)publisher->wrapper)->Publish(image);
 }

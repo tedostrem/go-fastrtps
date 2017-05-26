@@ -21,14 +21,15 @@ func image() []byte {
 }
 
 func main() {
-	media := C.GetTopicDataTypes().media
-	participant := C.NewFastRTPSParticipant(C.CString("participant"))
-	C.RegisterType(participant, media)
-	publisher := C.NewFastRTPSPublisher(participant, media, C.CString("media_topic"))
+	media := C.FastRTPSGetTopicDataTypes().media
+	participant := C.FastRTPSNewParticipant(C.CString("participant"))
+	publisherAttributes := C.FastRTPSGetPublisherAttributes(media, C.CString("media_topic")).multimedia
+	C.FastRTPSRegisterType(participant, media)
+	publisher := C.FastRTPSNewPublisher(participant, publisherAttributes)
 
 	img := image()
 	for i := 0; i < 10000; i += 1 {
 		fmt.Printf("Publisher Golang: %x\n", md5.Sum(img))
-		C.Publish(publisher, (*C.char)(C.CBytes(img)))
+		C.FastRTPSPublish(publisher, (*C.char)(C.CBytes(img)))
 	}
 }

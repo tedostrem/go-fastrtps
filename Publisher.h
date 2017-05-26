@@ -3,8 +3,13 @@ extern "C" {
 #endif
 
 typedef struct {
+	void* reliable;
+	void* multimedia;
+} FastRTPSPublisherAttributes; 
+
+typedef struct {
 	void* media;
-} TopicDataTypes;
+} FastRTPSTopicDataTypes;
 
 typedef struct {
 	void* wrapper;
@@ -14,12 +19,12 @@ typedef struct {
 	void* wrapper;
 } FastRTPSPublisher;
 
-
-void RegisterType(FastRTPSParticipant* participant, void* topicDataType);
-TopicDataTypes GetTopicDataTypes();
-FastRTPSParticipant* NewFastRTPSParticipant(char *name);
-FastRTPSPublisher* NewFastRTPSPublisher(FastRTPSParticipant *participant, void* topicDataType, char* topicName);
-void Publish(FastRTPSPublisher* publisher, char *image);
+FastRTPSPublisherAttributes FastRTPSGetPublisherAttributes(void* topicDataType, char* topicName);
+FastRTPSPublisher* FastRTPSNewPublisher(FastRTPSParticipant *participant, void* publisherAttributes);
+void FastRTPSRegisterType(FastRTPSParticipant* participant, void* topicDataType);
+FastRTPSTopicDataTypes FastRTPSGetTopicDataTypes();
+FastRTPSParticipant* FastRTPSNewParticipant(char *name);
+void FastRTPSPublish(FastRTPSPublisher* publisher, char *image);
 
 #ifdef __cplusplus
 }
