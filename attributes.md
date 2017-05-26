@@ -94,10 +94,10 @@
 - Subscriber
   - TopicAttributes topic :
   - ReaderQos qos : 
-  - MemoryManagmentPolicy historyMemoryPolicy : 
+  - MemoryManagmentPolicy historyMemoryPolicy : PREALLOCATED_MEMORY_MODE
 
 - Publisher
   - TopicAttributes topic :
   - WriterQos qos : 
-  - MemoryManagmentPolicy historyMemoryPolicy :
+  - MemoryManagmentPolicy historyMemoryPolicy : PREALLOCATED_MEMORY_MODE
 ```
