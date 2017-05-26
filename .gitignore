@@ -1,5 +1,3 @@
-*.h
-*.cxx
 *.a
 *PubSubTypes.*
 publisher.out

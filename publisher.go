@@ -1,6 +1,6 @@
 package main
 
-// #include "Publisher.h"
+// #include "FastRTPS.h"
 // #cgo CXXFLAGS: -std=c++11
 // #cgo CFLAGS: -I. -I/usr/local/include
 // #cgo LDFLAGS: -lfastcdr -lfastrtps -lcrypto
@@ -21,10 +21,10 @@ func image() []byte {
 }
 
 func main() {
-	media := C.FastRTPSGetTopicDataTypes().media
+	mediaType := C.FastRTPSGetTopicDataTypes().Media
 	participant := C.FastRTPSNewParticipant(C.CString("participant"))
-	publisherAttributes := C.FastRTPSGetPublisherAttributes(media, C.CString("media_topic")).multimedia
-	C.FastRTPSRegisterType(participant, media)
+	publisherAttributes := C.FastRTPSGetPublisherAttributes(mediaType, C.CString("media_topic")).MultimediaPublisher
+	C.FastRTPSRegisterType(participant, mediaType)
 	publisher := C.FastRTPSNewPublisher(participant, publisherAttributes)
 
 	img := image()

@@ -6,7 +6,7 @@ CXXFLAGS := -I/usr/local/include -L/usr/local/lib -lfastcdr -lfastrtps -std=c++1
 IDL_FILES := $(shell find -type f -name "*.idl")
 GENERATED_HEADER_FILES := ${IDL_FILES:%.idl=%PubSubTypes.h} ${IDL_FILES:%.idl=%.h} 
 GENERATED_SOURCE_FILES := ${IDL_FILES:%.idl=%PubSubTypes.cxx} ${IDL_FILES:%.idl=%.cxx}
-SOURCE_FILES := Publisher.cxx PubListener.cxx
+SOURCE_FILES := FastRTPS.cxx PubListener.cxx AttributesFactory.cxx FastRTPSParticipantWrapper.cxx FastRTPSPublisherWrapper.cxx
 OBJECT_FILES := ${GENERATED_SOURCE_FILES:%.cxx=%.o} ${SOURCE_FILES:%.cxx=%.o}
 OUTPUT_LIB := lib.a 
 PUBLISHER_BIN := ./publisher.out

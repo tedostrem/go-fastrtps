@@ -3,12 +3,12 @@ extern "C" {
 #endif
 
 typedef struct {
-	void* reliable;
-	void* multimedia;
+	void* ReliablePublisher;
+	void* MultimediaPublisher;
 } FastRTPSPublisherAttributes; 
 
 typedef struct {
-	void* media;
+	void* Media;
 } FastRTPSTopicDataTypes;
 
 typedef struct {
