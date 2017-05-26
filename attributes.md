@@ -1,3 +1,4 @@
+```yml
 * SimpleEDPAttributes
   * bool use_PublicationWriterANDSubscriptionReader : true
 	* bool use_PublicationReaderANDSubscriptionWriter : true
@@ -97,3 +98,4 @@
 	* TopicAttributes topic
 	* WriterQos qos
 	* MemoryManagmentPolicy historyMemoryPolicy
+```
