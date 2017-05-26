@@ -6,7 +6,7 @@
   - bool use_PublicationReaderANDSubscriptionWriter : true
 
 - BuiltInAttributes
-  - SimpleEDPAttributes m_simpleEDP
+  - SimpleEDPAttributes m_simpleEDP :
   - bool use_SIMPLE_RTPSParticipantDiscoveryProtocol : true
   - bool use_SIMPLE_EndpointDiscoveryProtocol : true
   - bool use_STATIC_EndpointDiscoveryProtocol : false 
@@ -40,7 +40,7 @@
   - RELIABLE_RELIABILITY_QOS : 0x02 # default for publishers
 
 - ReliabilityQosPolicy
-  - ReliabilityQosPolicyKind kind
+  - ReliabilityQosPolicyKind kind :
 
 - LivelinessQosPolicyKind
   - AUTOMATIC_LIVELINESS_QOS : 0
@@ -48,7 +48,7 @@
   - MANUAL_BY_TOPIC_LIVELINESS_QOS: 2
 
 - LivelinessQosPolicy 
-  - LivelinessQosPolicyKind kind
+  - LivelinessQosPolicyKind kind : AUTOMATIC_LIVELINESS_QOS
   - Duration_t lease_duration : c_TimeInfinite
   - Duration_t announcement_period : c_TimeInfinite
 
@@ -68,36 +68,36 @@
   - string topicKind : NO_KEY
   - string topicName : "UNDEF"
   - string topicDataType : "UNDEF"
-  - HistoryQosPolicy historyQos
-  - ResourceLimitsQosPolicy resourceLimitsQos
+  - HistoryQosPolicy historyQos :
+  - ResourceLimitsQosPolicy resourceLimitsQos :
 
 - ReaderQos
-  - DurabilityQosPolicy m_durability
-  - ReliabilityQosPolicy m_reliability
-  - LivelinessQosPolicy m_liveliness
+  - DurabilityQosPolicy m_durability :
+  - ReliabilityQosPolicy m_reliability :
+  - LivelinessQosPolicy m_liveliness :
 
 - Writer 
-  - DurabilityQosPolicy m_durability
-  - ReliabilityQosPolicy m_reliability
-  - LivelinessQosPolicy m_liveliness
-  - PublishModeQosPolicy m_publishMode
+  - DurabilityQosPolicy m_durability :
+  - ReliabilityQosPolicy m_reliability :
+  - LivelinessQosPolicy m_liveliness :
+  - PublishModeQosPolicy m_publishMode :
 
 - RTPSParticipantAttributes
-  - func setName("RTPSParticipant")
+  - func setName("RTPSParticipant") :
   - uint32_t defaultSendPort : 10040
   - bool use_IP4_to_send : true
   - bool use_IP6_to_send : false
 
 - Participant
-  - RTPSParticipantAttributes rtps
+  - RTPSParticipantAttributes rtps :
 
 - Subscriber
-  - TopicAttributes topic
-  - ReaderQos qos 
-  - MemoryManagmentPolicy historyMemoryPolicy
+  - TopicAttributes topic :
+  - ReaderQos qos : 
+  - MemoryManagmentPolicy historyMemoryPolicy : 
 
 - Publisher
-  - TopicAttributes topic
-  - WriterQos qos
-  - MemoryManagmentPolicy historyMemoryPolicy
+  - TopicAttributes topic :
+  - WriterQos qos : 
+  - MemoryManagmentPolicy historyMemoryPolicy :
 ```
