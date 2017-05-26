@@ -83,7 +83,7 @@
   * PublishModeQosPolicy m_publishMode
 
 * RTPSParticipantAttributes
-  *	func setName("RTPSParticipant")
+  * func setName("RTPSParticipant")
   * uint32_t defaultSendPort : 10040
   * bool use_IP4_to_send : true
   * bool use_IP6_to_send : false
