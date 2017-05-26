@@ -8,13 +8,15 @@
 
 using namespace eprosima::fastrtps;
 
-class FastRTPSPublisherWrapper {
-	private:
-		Publisher* publisher;
-		PubListener listener;
-	public:
-		FastRTPSPublisherWrapper(Participant* participant, PublisherAttributes* publisherAttributes);
-		void Publish(char *image);
+class FastRTPSPublisherWrapper
+{
+  private:
+	Publisher *publisher;
+	PubListener listener;
+
+  public:
+	FastRTPSPublisherWrapper(Participant *participant, PublisherAttributes *publisherAttributes);
+	void Publish(char *image);
 };
 
 #endif

@@ -6,10 +6,11 @@
 
 using namespace eprosima::fastrtps;
 
-class FastRTPSParticipantWrapper {
-	public:
-		Participant *participant;
-		FastRTPSParticipantWrapper(char *name);
+class FastRTPSParticipantWrapper
+{
+  public:
+	Participant *participant;
+	FastRTPSParticipantWrapper(char *name);
 };
 
 #endif

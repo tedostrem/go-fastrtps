@@ -3,7 +3,8 @@
 
 using namespace eprosima::fastrtps;
 
-FastRTPSParticipantWrapper::FastRTPSParticipantWrapper(char *name) {
+FastRTPSParticipantWrapper::FastRTPSParticipantWrapper(char *name)
+{
 	ParticipantAttributes PParam;
 	PParam.rtps.builtin.domainId = 0;
 	PParam.rtps.builtin.leaseDuration = c_TimeInfinite;

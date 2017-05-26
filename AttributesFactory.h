@@ -6,10 +6,11 @@
 
 using namespace eprosima::fastrtps;
 
-class AttributesFactory {
-	public:
-		static PublisherAttributes* ReliablePublisher(TopicDataType* topicDataType, char* topicName);
-		static PublisherAttributes* MultimediaPublisher(TopicDataType* topicDataType, char* topicName); 
+class AttributesFactory
+{
+  public:
+	static PublisherAttributes *ReliablePublisher(char *topicDataTypeName, char *topicName);
+	static PublisherAttributes *MultimediaPublisher(char *topicDataTypeName, char *topicName);
 };
 
 #endif
