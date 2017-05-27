@@ -1,6 +1,5 @@
 #include <fastrtps/Domain.h>
 #include "FastRTPSSubscriberWrapper.h"
-#include "MediaPubSubTypes.h"
 
 using namespace eprosima::fastrtps;
 
