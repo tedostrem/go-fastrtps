@@ -6,7 +6,9 @@ typedef struct
 {
 	void *ReliablePublisher;
 	void *MultimediaPublisher;
-} FastRTPSPublisherAttributes;
+	void *ReliableSubscriber;
+	void *MultimediaSubscriber;
+} FastRTPSAttributes;
 
 typedef struct
 {
@@ -23,8 +25,14 @@ typedef struct
 	void *wrapper;
 } FastRTPSPublisher;
 
-FastRTPSPublisherAttributes FastRTPSGetPublisherAttributes(void *topicDataType, char *topicName);
+typedef struct
+{
+	void *wrapper;
+} FastRTPSSubscriber;
+
+FastRTPSAttributes FastRTPSGetAttributes(void *topicDataType, char *topicName);
 FastRTPSPublisher *FastRTPSNewPublisher(FastRTPSParticipant *participant, void *publisherAttributes);
+FastRTPSSubscriber *FastRTPSNewSubscriber(FastRTPSParticipant *participant, void *subscriberAttributes);
 void FastRTPSRegisterType(FastRTPSParticipant *participant, void *topicDataType);
 FastRTPSTopicDataTypes FastRTPSGetTopicDataTypes();
 FastRTPSParticipant *FastRTPSNewParticipant(char *name);

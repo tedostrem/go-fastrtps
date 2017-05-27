@@ -2,6 +2,7 @@
 #include "AttributesFactory.h"
 #include "FastRTPSParticipantWrapper.h"
 #include "FastRTPSPublisherWrapper.h"
+#include "FastRTPSSubscriberWrapper.h"
 #include "FastRTPS.h"
 
 using namespace eprosima::fastrtps;
@@ -13,12 +14,14 @@ extern "C" void FastRTPSRegisterType(FastRTPSParticipant *participant, void *top
 		(TopicDataType *)topicDataType);
 }
 
-extern "C" FastRTPSPublisherAttributes FastRTPSGetPublisherAttributes(void *topicDataType, char *topicName)
+extern "C" FastRTPSAttributes FastRTPSGetAttributes(void *topicDataType, char *topicName)
 {
-	FastRTPSPublisherAttributes publisherAttributes;
-	publisherAttributes.ReliablePublisher = AttributesFactory::ReliablePublisher((char *)((TopicDataType *)topicDataType)->getName(), topicName);
-	publisherAttributes.MultimediaPublisher = AttributesFactory::MultimediaPublisher((char *)((TopicDataType *)topicDataType)->getName(), topicName);
-	return publisherAttributes;
+	FastRTPSAttributes attributes; 
+	attributes.ReliablePublisher = AttributesFactory::ReliablePublisher((char *)((TopicDataType *)topicDataType)->getName(), topicName);
+	attributes.MultimediaPublisher = AttributesFactory::MultimediaPublisher((char *)((TopicDataType *)topicDataType)->getName(), topicName);
+	attributes.ReliableSubscriber = AttributesFactory::ReliableSubscriber((char *)((TopicDataType *)topicDataType)->getName(), topicName);
+	attributes.MultimediaSubscriber= AttributesFactory::MultimediaSubscriber((char *)((TopicDataType *)topicDataType)->getName(), topicName);
+	return attributes;
 }
 
 extern "C" FastRTPSTopicDataTypes FastRTPSGetTopicDataTypes()
@@ -28,20 +31,29 @@ extern "C" FastRTPSTopicDataTypes FastRTPSGetTopicDataTypes()
 	return topicDataTypes;
 }
 
-extern "C" FastRTPSParticipant *FastRTPSNewParticipant(char *name)
+extern "C" FastRTPSParticipant* FastRTPSNewParticipant(char *name)
 {
 	FastRTPSParticipant *participant = new FastRTPSParticipant();
 	participant->wrapper = new FastRTPSParticipantWrapper(name);
 	return participant;
 }
 
-extern "C" FastRTPSPublisher *FastRTPSNewPublisher(FastRTPSParticipant *participant, void *publisherAttributes)
+extern "C" FastRTPSPublisher* FastRTPSNewPublisher(FastRTPSParticipant *participant, void *publisherAttributes)
 {
-	FastRTPSPublisher *publisher = new FastRTPSPublisher();
+	FastRTPSPublisher* publisher = new FastRTPSPublisher();
 	publisher->wrapper = new FastRTPSPublisherWrapper(
 		((FastRTPSParticipantWrapper *)participant->wrapper)->participant,
 		(PublisherAttributes *)publisherAttributes);
 	return publisher;
+}
+
+extern "C" FastRTPSSubscriber* FastRTPSNewSubscriber(FastRTPSParticipant *participant, void *subscriberAttributes)
+{
+	FastRTPSSubscriber* subscriber = new FastRTPSSubscriber();
+	subscriber->wrapper = new FastRTPSSubscriberWrapper(
+		((FastRTPSParticipantWrapper *)participant->wrapper)->participant,
+		(SubscriberAttributes *)subscriberAttributes);
+	return subscriber;
 }
 
 extern "C" void FastRTPSPublish(FastRTPSPublisher *publisher, char *image)

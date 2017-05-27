@@ -1,3 +1,5 @@
+// +build publisher
+
 package main
 
 // #include "FastRTPS.h"
@@ -22,10 +24,10 @@ func image() []byte {
 
 func main() {
 	mediaType := C.FastRTPSGetTopicDataTypes().Media
-	participant := C.FastRTPSNewParticipant(C.CString("participant"))
-	publisherAttributes := C.FastRTPSGetPublisherAttributes(mediaType, C.CString("media_topic")).MultimediaPublisher
+	participant := C.FastRTPSNewParticipant(C.CString("participant_publisher"))
+	mediaPublisherAttributes := C.FastRTPSGetAttributes(mediaType, C.CString("topic_multimedia")).MultimediaPublisher
 	C.FastRTPSRegisterType(participant, mediaType)
-	publisher := C.FastRTPSNewPublisher(participant, publisherAttributes)
+	publisher := C.FastRTPSNewPublisher(participant, mediaPublisherAttributes)
 
 	img := image()
 	for i := 0; i < 10000; i += 1 {
