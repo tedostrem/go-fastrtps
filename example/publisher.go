@@ -2,7 +2,7 @@
 
 package main
 
-// #include "custom.h"
+// #include "generated.h"
 // #cgo CXXFLAGS: -std=c++11
 // #cgo CFLAGS: -I. -I/usr/local/include
 // #cgo LDFLAGS: -lfastcdr -lfastrtps -lcrypto
@@ -32,6 +32,6 @@ func main() {
 	img := image()
 	for i := 0; i < 10000; i += 1 {
 		fmt.Printf("Publisher Golang: %x\n", md5.Sum(img))
-		C.Publish(publisher, (*C.char)(C.CBytes(img)))
+		C.PublishMedia(publisher, (*C.char)(C.CBytes(img)))
 	}
 }

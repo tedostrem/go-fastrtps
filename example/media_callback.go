@@ -31,8 +31,8 @@ func unregister(i int) {
 	delete(fns, i)
 }
 
-//export go_callback
-func go_callback(callbackId C.int, image *C.char) {
+//export media_callback
+func media_callback(callbackId C.int, image *C.char) {
 	fn := lookup(int(callbackId))
 	fn(image)
 }

@@ -1,4 +1,3 @@
-#include "../fastrtps/fastrtps.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -6,7 +5,7 @@ extern "C" {
 void *NewMediaSubListener(int callbackId);
 void *NewMediaTopicDataType();
 char *GetTopicDataTypeName(void *topicDataType);
-void Publish(void *publisher, char *image);
+void PublishMedia(void *publisher, char *image);
 
 #ifdef __cplusplus
 }

@@ -2,7 +2,7 @@
 
 package main
 
-// #include "custom.h"
+// #include "generated.h"
 // #cgo CXXFLAGS: -std=c++11
 // #cgo CFLAGS: -I. -I/usr/local/include
 // #cgo LDFLAGS: -lfastcdr -lfastrtps -lcrypto
