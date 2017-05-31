@@ -3,7 +3,7 @@
 extern "C" {
 #endif
 
-void *NewMediaSubListener();
+void *NewMediaSubListener(int callbackId);
 void *NewMediaTopicDataType();
 char *GetTopicDataTypeName(void *topicDataType);
 void Publish(void *publisher, char *image);

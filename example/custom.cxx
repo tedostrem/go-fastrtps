@@ -18,6 +18,8 @@ void MediaSubListener::onSubscriptionMatched(Subscriber *sub, MatchingInfo &info
   }
 }
 
+extern "C" void go_callback(int callbackId, char* image);
+
 void MediaSubListener::onNewDataMessage(Subscriber *sub)
 {
   Media st;
@@ -28,13 +30,14 @@ void MediaSubListener::onNewDataMessage(Subscriber *sub)
       ++n_msg;
       std::string str(st.image().begin(), st.image().end());
       std::cout << "Subscriber C++:    " << md5(str) << std::endl;
+			go_callback(this->callbackId, st.image().data());
     }
   }
 }
 
-extern "C" void *NewMediaSubListener()
+extern "C" void *NewMediaSubListener(int id)
 {
-  return (void *)new MediaSubListener();
+  return (void *)new MediaSubListener(id);
 }
 
 extern "C" void *NewMediaTopicDataType()

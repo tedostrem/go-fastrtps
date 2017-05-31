@@ -10,13 +10,17 @@ using namespace eprosima::fastrtps;
 class MediaSubListener : public SubscriberListener
 {
   public:
-    MediaSubListener() : n_matched(0),n_msg(0){};
+    MediaSubListener(int callbackId) : n_matched(0),n_msg(0)
+		{
+			this->callbackId = callbackId;
+		};
     ~MediaSubListener(){};
     void onSubscriptionMatched(Subscriber* sub, MatchingInfo& info);
     void onNewDataMessage(Subscriber* sub);
     SampleInfo_t m_info;
     int n_matched;
     int n_msg;
+		int callbackId;
 };
 
 #endif
