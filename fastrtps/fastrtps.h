@@ -34,15 +34,15 @@ typedef struct
 
 typedef struct
 {
-	void* subscriber;
-	void* listener;
+	void *subscriber;
+	void *listener;
 } FastRTPSSubscriber;
 
-FastRTPSAttributes FastRTPSGetAttributes(char* topicDataTypeName, char* topicName);
-void* FastRTPSNewPublisher(void* participant, void* publisherAttributes);
-void* FastRTPSNewSubscriber(void* subscriberListener, void* participant, void* subscriberAttributes);
-void* FastRTPSNewParticipant(char *name);
-void FastRTPSRegisterType(void* participant, void* topicDataType);
+FastRTPSAttributes FastRTPSGetAttributes(char *topicDataTypeName, char *topicName);
+void *FastRTPSNewPublisher(void *participant, void *publisherAttributes);
+void *FastRTPSNewSubscriber(void *subscriberListener, void *participant, void *subscriberAttributes);
+void *FastRTPSNewParticipant(char *name);
+void FastRTPSRegisterType(void *participant, void *topicDataType);
 
 #ifdef __cplusplus
 }

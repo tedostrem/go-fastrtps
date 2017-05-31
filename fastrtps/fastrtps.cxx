@@ -45,9 +45,9 @@ SubscriberAttributes *AttributesFactory::MultimediaSubscriber(char *topicDataTyp
 	return Wparam;
 }
 
-extern "C" void FastRTPSRegisterType(void* participant, void *topicDataType)
+extern "C" void FastRTPSRegisterType(void *participant, void *topicDataType)
 {
-	Domain::registerType((Participant*)participant, (TopicDataType *)topicDataType);
+	Domain::registerType((Participant *)participant, (TopicDataType *)topicDataType);
 }
 
 extern "C" FastRTPSAttributes FastRTPSGetAttributes(char *topicDataTypeName, char *topicName)
@@ -56,43 +56,43 @@ extern "C" FastRTPSAttributes FastRTPSGetAttributes(char *topicDataTypeName, cha
 	attributes.ReliablePublisher = AttributesFactory::ReliablePublisher(topicDataTypeName, topicName);
 	attributes.MultimediaPublisher = AttributesFactory::MultimediaPublisher(topicDataTypeName, topicName);
 	attributes.ReliableSubscriber = AttributesFactory::ReliableSubscriber(topicDataTypeName, topicName);
-	attributes.MultimediaSubscriber= AttributesFactory::MultimediaSubscriber(topicDataTypeName, topicName);
+	attributes.MultimediaSubscriber = AttributesFactory::MultimediaSubscriber(topicDataTypeName, topicName);
 	return attributes;
 }
 
-extern "C" void* FastRTPSNewParticipant(char *name)
+extern "C" void *FastRTPSNewParticipant(char *name)
 {
 	ParticipantAttributes PParam;
 	PParam.rtps.builtin.domainId = 0;
 	PParam.rtps.builtin.leaseDuration = c_TimeInfinite;
 	PParam.rtps.setName(name);
-	Participant* participant = Domain::createParticipant(PParam);
+	Participant *participant = Domain::createParticipant(PParam);
 	if (participant == nullptr)
 		throw "Participant could not be created";
-	return (void*)participant;
+	return (void *)participant;
 }
 
-extern "C" void* FastRTPSNewPublisher(void* participant, void* publisherAttributes)
+extern "C" void *FastRTPSNewPublisher(void *participant, void *publisherAttributes)
 {
-	FastRTPSPublisher* publisher = new FastRTPSPublisher();
-	publisher->publisher = (Publisher*)Domain::createPublisher(
-			(Participant*)participant,
-			*((PublisherAttributes*)publisherAttributes),
-			(PublisherListener*)publisher->listener);
-  if (publisher->publisher == nullptr)
-    throw "Publisher could not be created";
-	return (void*)publisher;
+	FastRTPSPublisher *publisher = new FastRTPSPublisher();
+	publisher->publisher = (Publisher *)Domain::createPublisher(
+		(Participant *)participant,
+		*((PublisherAttributes *)publisherAttributes),
+		(PublisherListener *)publisher->listener);
+	if (publisher->publisher == nullptr)
+		throw "Publisher could not be created";
+	return (void *)publisher;
 }
 
-extern "C" void* FastRTPSNewSubscriber(void* subListener, void* participant, void *subscriberAttributes)
+extern "C" void *FastRTPSNewSubscriber(void *subListener, void *participant, void *subscriberAttributes)
 {
-	FastRTPSSubscriber* subscriber = new FastRTPSSubscriber();
-	subscriber->listener = (SubscriberListener*)subListener;
-  subscriber->subscriber = (Subscriber*)Domain::createSubscriber(
-			(Participant*)participant,
-			*((SubscriberAttributes*)subscriberAttributes),
-			(SubscriberListener*)subscriber->listener);
-  if (subscriber->subscriber == nullptr)
-    throw "Subscriber could not be created";
-	return (void*)subscriber;
+	FastRTPSSubscriber *subscriber = new FastRTPSSubscriber();
+	subscriber->listener = (SubscriberListener *)subListener;
+	subscriber->subscriber = (Subscriber *)Domain::createSubscriber(
+		(Participant *)participant,
+		*((SubscriberAttributes *)subscriberAttributes),
+		(SubscriberListener *)subscriber->listener);
+	if (subscriber->subscriber == nullptr)
+		throw "Subscriber could not be created";
+	return (void *)subscriber;
 }
