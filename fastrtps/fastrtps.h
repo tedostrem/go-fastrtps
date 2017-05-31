@@ -1,5 +1,4 @@
 #ifdef __cplusplus
-
 #include <fastrtps/attributes/PublisherAttributes.h>
 #include <fastrtps/attributes/SubscriberAttributes.h>
 #include <fastrtps/Domain.h>
@@ -17,7 +16,6 @@ class AttributesFactory
 
 extern "C" {
 #endif
-
 typedef struct
 {
 	void *ReliablePublisher;
