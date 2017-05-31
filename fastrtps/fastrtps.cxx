@@ -66,7 +66,7 @@ extern "C" void *FastRTPSNewParticipant(char *name)
 	param.rtps.builtin.domainId = 0;
 	param.rtps.builtin.leaseDuration = c_TimeInfinite;
 	param.rtps.setName(name);
-	Participant *participant = Domain::createParticipant(PParam);
+	Participant *participant = Domain::createParticipant(param);
 	if (participant == nullptr)
 		throw "Participant could not be created";
 	return (void *)participant;
