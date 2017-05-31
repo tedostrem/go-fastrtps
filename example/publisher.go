@@ -2,6 +2,12 @@
 
 package main
 
+// #include "custom.h"
+// #cgo CXXFLAGS: -std=c++11
+// #cgo CFLAGS: -I. -I/usr/local/include
+// #cgo LDFLAGS: -lfastcdr -lfastrtps -lcrypto
+import "C"
+
 import (
 	"crypto/md5"
 	"fmt"
@@ -19,13 +25,13 @@ func image() []byte {
 
 func main() {
 	participant := fastrtps.NewParticipant("participant_publisher")
-	topicDataType := fastrtps.GetTopicDataTypes().Media
-	publisherAttributes := fastrtps.GetAttributes(topicDataType, "topic_multimedia").MultimediaPublisher
+	topicDataType := C.NewMediaTopicDataType()
+	publisherAttributes := fastrtps.GetAttributes(C.GoString(C.GetTopicDataTypeName(topicDataType)), "topic_multimedia").MultimediaPublisher
 	fastrtps.RegisterType(participant, topicDataType)
 	publisher := fastrtps.NewPublisher(participant, publisherAttributes)
 	img := image()
 	for i := 0; i < 10000; i += 1 {
 		fmt.Printf("Publisher Golang: %x\n", md5.Sum(img))
-		publisher.Publish(img)
+		C.Publish(publisher, (*C.char)(C.CBytes(img)))
 	}
 }

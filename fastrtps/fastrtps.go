@@ -1,6 +1,6 @@
 package fastrtps
 
-// #include "FastRTPS.h"
+// #include "fastrtps.h"
 // #cgo CXXFLAGS: -std=c++11
 // #cgo CFLAGS: -I. -I/usr/local/include
 // #cgo LDFLAGS: -lfastcdr -lfastrtps -lcrypto
@@ -10,42 +10,22 @@ import (
 	"unsafe"
 )
 
-type Publisher struct {
-	publisher *C.FastRTPSPublisher
-}
-
-type Subscriber struct {
-	subscriber *C.FastRTPSSubscriber
-}
-
-func GetTopicDataTypes() C.FastRTPSTopicDataTypes {
-	return C.FastRTPSGetTopicDataTypes()
-}
-
-func NewParticipant(name string) *C.FastRTPSParticipant {
+func NewParticipant(name string) unsafe.Pointer {
 	return C.FastRTPSNewParticipant(C.CString(name))
 }
 
-func GetAttributes(topicDataType unsafe.Pointer, topicName string) C.FastRTPSAttributes {
-	return C.FastRTPSGetAttributes(topicDataType, C.CString(topicName))
+func GetAttributes(topicDataTypeName string, topicName string) C.FastRTPSAttributes {
+	return C.FastRTPSGetAttributes(C.CString(topicDataTypeName), C.CString(topicName))
 }
 
-func RegisterType(participant *C.FastRTPSParticipant, topicDataType unsafe.Pointer) {
+func RegisterType(participant unsafe.Pointer, topicDataType unsafe.Pointer) {
 	C.FastRTPSRegisterType(participant, topicDataType)
 }
 
-func (p *Publisher) Publish(image []byte) {
-	C.FastRTPSPublish(p.publisher, (*C.char)(C.CBytes(image)))
+func NewPublisher(participant unsafe.Pointer, publisherAttributes unsafe.Pointer) unsafe.Pointer {
+	return C.FastRTPSNewPublisher(participant, publisherAttributes)
 }
 
-func NewPublisher(participant *C.FastRTPSParticipant, publisherAttributes unsafe.Pointer) *Publisher {
-	return &Publisher{
-		publisher: C.FastRTPSNewPublisher(participant, publisherAttributes),
-	}
-}
-
-func NewSubscriber(participant *C.FastRTPSParticipant, subscriberAttributes unsafe.Pointer) *Subscriber {
-	return &Subscriber{
-		subscriber: C.FastRTPSNewSubscriber(participant, subscriberAttributes),
-	}
+func NewSubscriber(subListener unsafe.Pointer, participant unsafe.Pointer, subscriberAttributes unsafe.Pointer) unsafe.Pointer {
+	return C.FastRTPSNewSubscriber(subListener, participant, subscriberAttributes)
 }
