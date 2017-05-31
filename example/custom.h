@@ -3,10 +3,10 @@
 extern "C" {
 #endif
 
-void* NewMediaSubListener();
-void* NewMediaTopicDataType();
-char* GetTopicDataTypeName(void* topicDataType);
-void Publish(void* publisher, char* image);
+void *NewMediaSubListener();
+void *NewMediaTopicDataType();
+char *GetTopicDataTypeName(void *topicDataType);
+void Publish(void *publisher, char *image);
 
 #ifdef __cplusplus
 }
