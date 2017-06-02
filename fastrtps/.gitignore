@@ -1,0 +1,5 @@
+*.idl
+Types.*
+*.so
+*.o
+*PubSubTypes.*
