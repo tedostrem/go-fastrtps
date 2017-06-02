@@ -30,6 +30,10 @@ func NewSubscriber(subListener unsafe.Pointer, participant unsafe.Pointer, subsc
 	return C.FastRTPSNewSubscriber(subListener, participant, subscriberAttributes)
 }
 
+func RemoveParticipant(participant unsafe.Pointer) {
+	C.FastRTPSRemoveParticipant(participant)
+}
+
 func NewMediaTopicDataType() unsafe.Pointer {
 	return C.FastRTPSNewMediaTopicDataType()
 }

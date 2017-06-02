@@ -1,4 +1,0 @@
-struct Media 
-{
-   char image[1382400];
-};

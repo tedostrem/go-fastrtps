@@ -1,4 +1,5 @@
 #ifdef __cplusplus
+#include <fastrtps/publisher/Publisher.h>
 #include <fastrtps/attributes/PublisherAttributes.h>
 #include <fastrtps/attributes/SubscriberAttributes.h>
 #include <fastrtps/Domain.h>
@@ -42,6 +43,7 @@ void *FastRTPSNewSubscriber(void *subscriberListener, void *participant, void *s
 void *FastRTPSNewParticipant(char *name);
 void *FastRTPSNewMediaTopicDataType();
 void FastRTPSRegisterType(void *participant, void *topicDataType);
+void FastRTPSRemoveParticipant(void* participant);
 
 #ifdef __cplusplus
 }

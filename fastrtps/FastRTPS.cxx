@@ -98,6 +98,7 @@ extern "C" void *FastRTPSNewSubscriber(void *subListener, void *participant, voi
 	return (void *)subscriber;
 }
 
-extern "C" void *FastRTPSNewMediaTopicDataType() {
-	return (void*)new MediaPubSubType();
+extern "C" void FastRTPSRemoveParticipant(void* participant)
+{
+	Domain::removeParticipant((Participant *)participant);
 }
