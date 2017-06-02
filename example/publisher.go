@@ -4,8 +4,7 @@ package main
 
 // #include "Publisher.h"
 // #cgo CXXFLAGS: -std=c++11
-// #cgo CFLAGS: -I. -I/usr/local/include
-// #cgo LDFLAGS: -lfastcdr -lfastrtps -lcrypto ../fastrtps/lib.a
+// #cgo LDFLAGS: -lfastcdr -lfastrtps -lgofastrtps
 import "C"
 
 import (
@@ -30,8 +29,9 @@ func main() {
 	fastrtps.RegisterType(participant, topicDataType)
 	publisher := fastrtps.NewPublisher(participant, publisherAttributes)
 	img := image()
-	for i := 0; i < 10000; i += 1 {
+	for i := 0; i < 10; i += 1 {
 		fmt.Printf("Publisher Golang: %x\n", md5.Sum(img))
 		C.PublishMedia(publisher, (*C.char)(C.CBytes(img)))
 	}
+	fastrtps.RemoveParticipant(participant)
 }
