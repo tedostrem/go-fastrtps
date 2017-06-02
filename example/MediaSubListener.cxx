@@ -1,6 +1,9 @@
-#include "../fastrtps/fastrtps.h"
-#include "MediaPubSubTypes.h"
+// +build subscriber
+
+#include "../fastrtps/FastRTPS.h"
+#include "../fastrtps/MediaPubSubTypes.h"
 #include "MediaSubListener.h"
+#include "_cgo_export.h"
 
 void MediaSubListener::onSubscriptionMatched(Subscriber *sub, MatchingInfo &info)
 {
@@ -16,8 +19,6 @@ void MediaSubListener::onSubscriptionMatched(Subscriber *sub, MatchingInfo &info
   }
 }
 
-extern "C" void media_callback(int callbackId, char* image);
-
 void MediaSubListener::onNewDataMessage(Subscriber *sub)
 {
   Media st;
@@ -26,9 +27,12 @@ void MediaSubListener::onNewDataMessage(Subscriber *sub)
     if (m_info.sampleKind == ALIVE)
     {
       ++n_msg;
-      std::string str(st.image().begin(), st.image().end());
-      std::cout << "Subscriber C++:    " << md5(str) << std::endl;
-			media_callback(this->callbackId, st.image().data());
+			MediaCallback(st.image().data());
     }
   }
+}
+
+extern "C" void *NewMediaSubListener()
+{
+  return (void *)new MediaSubListener();
 }

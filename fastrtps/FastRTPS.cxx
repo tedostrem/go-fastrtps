@@ -1,19 +1,20 @@
-#include "fastrtps.h"
+#include "FastRTPS.h"
+#include "MediaPubSubTypes.h"
 
 using namespace eprosima::fastrtps;
 
-PublisherAttributes *AttributesFactory::ReliablePublisher(char *topicDataTypeName, char *topicName)
+PublisherAttributes *AttributesFactory::ReliablePublisher(void *topicDataType, char *topicName)
 {
 	PublisherAttributes *param = new PublisherAttributes();
-	param->topic.topicDataType = topicDataTypeName;
+	param->topic.topicDataType = ((TopicDataType *)topicDataType)->getName();
 	param->topic.topicName = topicName;
 	return param;
 }
 
-PublisherAttributes *AttributesFactory::MultimediaPublisher(char *topicDataTypeName, char *topicName)
+PublisherAttributes *AttributesFactory::MultimediaPublisher(void *topicDataType, char *topicName)
 {
 	PublisherAttributes *param = new PublisherAttributes();
-	param->topic.topicDataType = topicDataTypeName;
+	param->topic.topicDataType = ((TopicDataType *)topicDataType)->getName();
 	param->topic.topicName = topicName;
 	param->qos.m_reliability.kind = BEST_EFFORT_RELIABILITY_QOS;
 	param->topic.historyQos.depth = 50;
@@ -24,18 +25,18 @@ PublisherAttributes *AttributesFactory::MultimediaPublisher(char *topicDataTypeN
 	return param;
 }
 
-SubscriberAttributes *AttributesFactory::ReliableSubscriber(char *topicDataTypeName, char *topicName)
+SubscriberAttributes *AttributesFactory::ReliableSubscriber(void *topicDataType, char *topicName)
 {
 	SubscriberAttributes *param = new SubscriberAttributes();
-	param->topic.topicDataType = topicDataTypeName;
+	param->topic.topicDataType = ((TopicDataType *)topicDataType)->getName();
 	param->topic.topicName = topicName;
 	return param;
 }
 
-SubscriberAttributes *AttributesFactory::MultimediaSubscriber(char *topicDataTypeName, char *topicName)
+SubscriberAttributes *AttributesFactory::MultimediaSubscriber(void *topicDataType, char *topicName)
 {
 	SubscriberAttributes *param = new SubscriberAttributes();
-	param->topic.topicDataType = topicDataTypeName;
+	param->topic.topicDataType = ((TopicDataType *)topicDataType)->getName();
 	param->topic.topicName = topicName;
 	param->qos.m_reliability.kind = BEST_EFFORT_RELIABILITY_QOS;
 	param->topic.historyQos.depth = 50;
@@ -50,13 +51,13 @@ extern "C" void FastRTPSRegisterType(void *participant, void *topicDataType)
 	Domain::registerType((Participant *)participant, (TopicDataType *)topicDataType);
 }
 
-extern "C" FastRTPSAttributes FastRTPSGetAttributes(char *topicDataTypeName, char *topicName)
+extern "C" FastRTPSAttributes FastRTPSGetAttributes(void *topicDataType, char *topicName)
 {
 	FastRTPSAttributes attributes;
-	attributes.ReliablePublisher = AttributesFactory::ReliablePublisher(topicDataTypeName, topicName);
-	attributes.MultimediaPublisher = AttributesFactory::MultimediaPublisher(topicDataTypeName, topicName);
-	attributes.ReliableSubscriber = AttributesFactory::ReliableSubscriber(topicDataTypeName, topicName);
-	attributes.MultimediaSubscriber = AttributesFactory::MultimediaSubscriber(topicDataTypeName, topicName);
+	attributes.ReliablePublisher = AttributesFactory::ReliablePublisher(topicDataType, topicName);
+	attributes.MultimediaPublisher = AttributesFactory::MultimediaPublisher(topicDataType, topicName);
+	attributes.ReliableSubscriber = AttributesFactory::ReliableSubscriber(topicDataType, topicName);
+	attributes.MultimediaSubscriber = AttributesFactory::MultimediaSubscriber(topicDataType, topicName);
 	return attributes;
 }
 
@@ -95,4 +96,8 @@ extern "C" void *FastRTPSNewSubscriber(void *subListener, void *participant, voi
 	if (subscriber->subscriber == nullptr)
 		throw "Subscriber could not be created";
 	return (void *)subscriber;
+}
+
+extern "C" void *FastRTPSNewMediaTopicDataType() {
+	return (void*)new MediaPubSubType();
 }

@@ -2,10 +2,10 @@
 
 package main
 
-// #include "generated.h"
+// #include "MediaSubListener.h"
 // #cgo CXXFLAGS: -std=c++11
 // #cgo CFLAGS: -I. -I/usr/local/include
-// #cgo LDFLAGS: -lfastcdr -lfastrtps -lcrypto
+// #cgo LDFLAGS: -lfastcdr -lfastrtps -lcrypto ../fastrtps/lib.a
 import "C"
 
 import (
@@ -16,21 +16,20 @@ import (
 	"unsafe"
 )
 
-func OnNewMessage(image *C.char) {
+//export MediaCallback
+func MediaCallback(image *C.char) {
 	img := C.GoBytes(unsafe.Pointer(image), 1382400)
 	fmt.Printf("Subscriber Golang: %x\n", md5.Sum(img))
 }
 
 func main() {
 	participant := fastrtps.NewParticipant("participant_subscriber")
-	topicDataType := C.NewMediaTopicDataType()
-	subscriberAttributes := fastrtps.GetAttributes(C.GoString(C.GetTopicDataTypeName(topicDataType)), "topic_multimedia").MultimediaSubscriber
+	topicDataType := fastrtps.NewMediaTopicDataType()
+	subscriberAttributes := fastrtps.GetAttributes(topicDataType, "topic_multimedia").MultimediaSubscriber
 	fastrtps.RegisterType(participant, topicDataType)
-	fn := register(OnNewMessage)
-	listener := C.NewMediaSubListener(C.int(fn))
+	listener := C.NewMediaSubListener()
 	fastrtps.NewSubscriber(listener, participant, subscriberAttributes)
 	for {
 		time.Sleep(1 * time.Second)
 	}
-	unregister(fn)
 }

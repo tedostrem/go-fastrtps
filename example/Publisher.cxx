@@ -1,7 +1,9 @@
-#include "../fastrtps/fastrtps.h"
+// +build publisher
+
 #include <fastrtps/publisher/Publisher.h>
-#include "publisher.h"
-#include "MediaPubSubTypes.h"
+#include "../fastrtps/FastRTPS.h"
+#include "../fastrtps/MediaPubSubTypes.h"
+#include "Publisher.h"
 
 extern "C" void PublishMedia(void *publisher, char *image)
 {

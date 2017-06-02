@@ -8,10 +8,10 @@ using namespace eprosima::fastrtps;
 class AttributesFactory
 {
   public:
-	static PublisherAttributes *ReliablePublisher(char *topicDataTypeName, char *topicName);
-	static PublisherAttributes *MultimediaPublisher(char *topicDataTypeName, char *topicName);
-	static SubscriberAttributes *ReliableSubscriber(char *topicDataTypeName, char *topicName);
-	static SubscriberAttributes *MultimediaSubscriber(char *topicDataTypeName, char *topicName);
+	static PublisherAttributes *ReliablePublisher(void *topicDataType, char *topicName);
+	static PublisherAttributes *MultimediaPublisher(void *topicDataType, char *topicName);
+	static SubscriberAttributes *ReliableSubscriber(void *topicDataType, char *topicName);
+	static SubscriberAttributes *MultimediaSubscriber(void *topicDataType, char *topicName);
 };
 
 extern "C" {
@@ -36,10 +36,11 @@ typedef struct
 	void *listener;
 } FastRTPSSubscriber;
 
-FastRTPSAttributes FastRTPSGetAttributes(char *topicDataTypeName, char *topicName);
+FastRTPSAttributes FastRTPSGetAttributes(void *topicDataType, char *topicName);
 void *FastRTPSNewPublisher(void *participant, void *publisherAttributes);
 void *FastRTPSNewSubscriber(void *subscriberListener, void *participant, void *subscriberAttributes);
 void *FastRTPSNewParticipant(char *name);
+void *FastRTPSNewMediaTopicDataType();
 void FastRTPSRegisterType(void *participant, void *topicDataType);
 
 #ifdef __cplusplus

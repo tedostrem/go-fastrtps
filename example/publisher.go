@@ -2,10 +2,10 @@
 
 package main
 
-// #include "generated.h"
+// #include "Publisher.h"
 // #cgo CXXFLAGS: -std=c++11
 // #cgo CFLAGS: -I. -I/usr/local/include
-// #cgo LDFLAGS: -lfastcdr -lfastrtps -lcrypto
+// #cgo LDFLAGS: -lfastcdr -lfastrtps -lcrypto ../fastrtps/lib.a
 import "C"
 
 import (
@@ -25,8 +25,8 @@ func image() []byte {
 
 func main() {
 	participant := fastrtps.NewParticipant("participant_publisher")
-	topicDataType := C.NewMediaTopicDataType()
-	publisherAttributes := fastrtps.GetAttributes(C.GoString(C.GetTopicDataTypeName(topicDataType)), "topic_multimedia").MultimediaPublisher
+	topicDataType := fastrtps.NewMediaTopicDataType()
+	publisherAttributes := fastrtps.GetAttributes(topicDataType, "topic_multimedia").MultimediaPublisher
 	fastrtps.RegisterType(participant, topicDataType)
 	publisher := fastrtps.NewPublisher(participant, publisherAttributes)
 	img := image()
