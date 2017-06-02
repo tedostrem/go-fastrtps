@@ -1,3 +1,4 @@
+*.deb
 *.idl
 Types.*
 *.so
